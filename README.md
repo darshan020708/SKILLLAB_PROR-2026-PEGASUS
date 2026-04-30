@@ -55,28 +55,30 @@ By the final review, this README should clearly show:
 
 # 1. Team Identity
 
-## 1.1 Studio / Group Name
+## 1.1 Group Name - Peagasus
 
-`Project^2`
+
 
 ## 1.2 Team Members
 
 | Name                  | Primary Role                    | Secondary Role   | Strengths Brought to the Project |
-| --------------        | ------------------------------- | --------------   | -------------------------------- |
-| `Mrugendra Vasmatkar` | `[Electronics / Coding / App ]` | `Documentation`  | `Documentation, Gift of Gab `|
-| `Jyoti Bagate`        | `[Electronics / Fabrication]`   | `[Coding]`       | `Material Handling, Hardware`    |
+| --------------------- | ------------------------------- | --------------   | -------------------------------- |
+| Bhakti Milind Kasare  | `[Electronics / Coding / App ]` | `Documentation`  | `Documentation, Gift of Gab `    |
+| Darshan Dubey         | `[Electronics / Fabrication]`   | `[Coding]`       | `Material Handling, Hardware`    |
+| Jyotiraditya Bhosale  |                                 |                  |                                  |
+| Sneha Tiwari          |                                 |                  |                                  |
 
 ## 1.3 Project Title
 
-`"Project Project"`
+Project Title: Ping Pong Game
 
-`(because Project-or)`
+ Camera Controlled Ping Pong Game
 
 <img width="1600" height="1131" alt="image" src="https://github.com/user-attachments/assets/c64bfbd4-b3b7-43d9-83ad-c203a5aa11bc" />
 
 ## 1.4 One-Line Pitch
 
-`A projected, fully customizable time portal where engineering education is done through PUBG battlefield in the comfort of our home`
+A computer vision-based Ping Pong game where the paddle is controlled by tracking a real-world object using a camera.
 
 ## 1.5 Expanded Project Idea
 
@@ -87,7 +89,11 @@ In 1–2 paragraphs, explain:
 - what technologies are involved.
 
 **Response:**  
-`A projected and fully customizable time portal can transform engineering education into an immersive PUBG-style battlefield experience from the comfort of home. In this environment, students can learn engineering concepts by entering a virtual battlefield where challenges, obstacles, and missions are designed around real technical problems. Instead of passively studying theory, learners actively apply concepts such as electronics, coding, sensors, robotics, mechanics, and system design to complete missions, solve problems, and progress through different levels. This approach makes engineering education more interactive, engaging, and practical by combining gaming, simulation, and hands-on problem-solving in a familiar and exciting format.`
+Our project is an interactive Ping Pong game that replaces traditional controls with computer vision. Instead of using a keyboard or mouse, the player controls the paddle by moving a physical object (such as a phone or colored marker) in front of a camera.
+
+The system uses a camera module to continuously capture frames and detect the position of the object in real time. This position is then mapped to the movement of the paddle (white block) on the screen.
+
+The game is developed using Python with OpenCV for object tracking and Pygame for rendering the game environment. This creates a more natural and engaging interaction, blending physical motion with digital gameplay.
 
 ---
 
@@ -97,18 +103,24 @@ In 1–2 paragraphs, explain:
 
 List what inspired the project.
 
-| Source Type | Title / Link                                                        | What Inspired You                                                                         |
-| ----------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `[Video]`   | `https://www.instagram.com/reel/DW4CT7WCDry/?igsh=cXg3dzAxYmdncDBo` | `How projection mapping can be used to create interactive digital + physical experiences` |
-|             |                                                                     |                                                                                           |
-|             |                                                                     |                                                                                           |
+| Source Type | Title / Link                                                      | What Inspired You |
+|video        | https://www.instagram.com/reel/DW4CT7WCDry/?igsh=cXg3dzAxYmdncDBo |                   |
+|project      | Computer Vision Games (OpenCV examples)                           |                   |
+|game         | Classic Ping Pong Game                                            |                   |
+
 
 ## 2.2 Original Twist
 
 What makes your project original?
 
 **Response:**  
+The uniqueness of our project lies in replacing conventional input devices with vision-based interaction.
 
+Key innovations:
+- Paddle controlled using real-world object movement
+- No physical controller required
+- Real-time camera tracking integration
+- Natural hand-eye coordination gameplay
 
 ---
 
@@ -117,11 +129,15 @@ What makes your project original?
 ## 3.1 User Journey 
 
 Describe exactly how a user will use the project.Make it a story
+
 **Response:**  
 
-                                                  |
-
-
+The user starts the game on the computer screen. A camera is positioned in front of the player.
+The system detects a predefined object (such as a phone or colored marker). As the user moves the object left or right, the camera tracks its position in real time.
+This movement is instantly reflected on the screen, where the white paddle follows the object’s motion.
+The ball begins moving, and the user must physically move the object to hit the ball and keep it in play.
+The experience feels intuitive, as the player directly controls the game using real-world movement instead of buttons.
+                                        
 
 ---
 
@@ -137,11 +153,18 @@ What is the smallest version of this project that still delivers the core experi
 
 **Response:**  
 
+A working version where:
+- Camera successfully tracks an object
+- Paddle moves based on object position
+- Ball collision logic works correctly
+Even without advanced graphics, this delivers the core interaction.
 
 ## 4.3 Stretch Features
-
-What features are nice to have but not essential?
-
+- Multi-object tracking for multiplayer
+- Gesture-based controls
+- Improved tracking accuracy
+- Scoreboard and difficulty levels
+- Sound effects and animations
 
 ---
 
@@ -151,27 +174,27 @@ What features are nice to have but not essential?
 
 Check all that apply.
 
-- [x] Electronics-based
+- [ ] Electronics-based
 
 - [ ] Mechanical
 
-- [x] Sensor-based
+- [ ] Sensor-based
 
-- [x] App-connected
+- [ ] App-connected
 
-- [x] Motorized
+- [ ] Motorized
 
 - [ ] Sound-based
 
-- [x] Light-based
+- [ ] Light-based
 
-- [x] Screen/UI-based
+- [✅] Screen/UI-based
 
-- [x] Fabricated structure
+- [ ] Fabricated structure
 
-- [x] Game logic based
+- [✅] Game logic based
 
-- [x] Installation
+- [ ] Installation
 
 - [ ] Other:
 
@@ -188,10 +211,29 @@ Include:
 - app interaction if any.
 
 **Response:**  
+Input:
+Camera captures real-time video feed.
+
+Processing:
+OpenCV processes each frame to detect the object and determine its position.
+
+Decision:
+The detected position is mapped to paddle movement.
+
+Output:
+The paddle moves on the screen in the Ping Pong game.
+
+System Structure:
+Camera → OpenCV Processing → Game Logic → Display (Pygame)
+
 
 ## 5.3 Input / Output Map
 
-| System Part                              | Type            | What It Does                                                               |
+| System Part   | Type            | What It Does               |
+| Camera Module | Input           | Captures real-time video   |
+| OpenCV	      |Process	Detects | object position            |
+| Game Logic	  |Decision	Converts| position to paddle movement|
+| Pygame Display|	Output	        |Shows game and paddle       |
 
 
 ---
