@@ -1,1 +1,163 @@
-Insert your documented code here
+import cv2
+import numpy as np
+import pygame
+import sys
+import threading
+import random
+
+# 1. Vision Engine - Running at max speed in background
+class VisionEngine:
+    def __init__(self, src):
+        self.cap = cv2.VideoCapture(src)
+        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        self.paddle_y = 300
+        self.stopped = False
+        
+    def start(self):
+        threading.Thread(target=self.process, daemon=True).start()
+        return self
+
+    def process(self):
+        while not self.stopped:
+            ret, frame = self.cap.read()
+            if not ret: continue
+            
+            # Ultra-low resolution processing for speed
+            small = cv2.resize(frame, (160, 120))
+            small = cv2.flip(small, 1)
+            hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+            
+            # Precise Blue Tracking
+            lower = np.array([100, 150, 100])
+            upper = np.array([140, 255, 255])
+            mask = cv2.inRange(hsv, lower, upper)
+            
+            cnts, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            if cnts:
+                largest = max(cnts, key=cv2.contourArea)
+                if cv2.contourArea(largest) > 80:
+                    M = cv2.moments(largest)
+                    if M["m00"] != 0:
+                        cy = int(M["m01"] / M["m00"])
+                        target_y = int((cy / 120) * 600)
+                        # LERP Smoothing: Paddle moves 30% of the way to target each frame
+                        self.paddle_y = self.paddle_y + (target_y - self.paddle_y) * 0.3
+
+    def stop(self):
+        self.stopped = True
+        self.cap.release()
+
+# 2. Setup Pygame UI
+pygame.init()
+WIDTH, HEIGHT = 900, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+clock = pygame.time.Clock()
+
+# Neon Palette
+CYAN, MAGENTA, YELLOW, WHITE = (0, 255, 255), (255, 0, 255), (255, 255, 0), (255, 255, 255)
+STARS = [[random.randint(0, WIDTH), random.randint(0, HEIGHT)] for _ in range(50)]
+
+# Game State
+ball_pos = [WIDTH//2, HEIGHT//2]
+ball_speed = [5, 5] # Base smooth speed
+ball_trail = []
+player_score, ai_score = 0, 0
+ai_y, ai_speed = HEIGHT // 2, 4.5
+consecutive_hits = 0
+is_power_shot = False
+state = "PLAYING"
+
+# Connect to Phone
+URL = "http://10.253.23.79:8080/video"
+vision = VisionEngine(URL).start()
+
+def draw_paddle(x, y, color):
+    # Glow effect layers
+    for i in range(4, 0, -1):
+        pygame.draw.rect(screen, color, (x-i, y-50-i, 15+i*2, 100+i*2), 1, border_radius=5)
+    pygame.draw.rect(screen, WHITE, (x, y-50, 15, 100), border_radius=3)
+
+def draw_ball():
+    color = YELLOW if is_power_shot else WHITE
+    # Smooth Trail
+    for i, pos in enumerate(ball_trail):
+        alpha = int((i / len(ball_trail)) * 255)
+        size = int(2 + (i / len(ball_trail)) * 10)
+        # Fake transparency with color fading
+        t_color = tuple(int(c * (i/len(ball_trail))) for c in color)
+        pygame.draw.circle(screen, t_color, (int(pos[0]), int(pos[1])), size)
+    
+    # Core Ball
+    pygame.draw.circle(screen, color, (int(ball_pos[0]), int(ball_pos[1])), 12)
+    pygame.draw.circle(screen, WHITE, (int(ball_pos[0]), int(ball_pos[1])), 8)
+
+# 3. Main Loop
+while True:
+    # Static Background with stars
+    screen.fill((10, 10, 20))
+    for star in STARS:
+        star[0] -= 0.5
+        if star[0] < 0: star[0] = WIDTH
+        pygame.draw.circle(screen, (80, 80, 100), star, 1)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            vision.stop(); pygame.quit(); sys.exit()
+
+    if state == "PLAYING":
+        # AI follow logic (Slightly slower than ball for fairness)
+        if ai_y < ball_pos[1]: ai_y += ai_speed
+        else: ai_y -= ai_speed
+
+        # Trail update
+        ball_trail.append(list(ball_pos))
+        if len(ball_trail) > 12: ball_trail.pop(0)
+
+        # Smooth Movement
+        ball_pos[0] += ball_speed[0]
+        ball_pos[1] += ball_speed[1]
+
+        # Bouncing
+        if ball_pos[1] <= 15 or ball_pos[1] >= HEIGHT - 15: ball_speed[1] *= -1
+
+        # Paddle Collisions
+        if ball_pos[0] <= 50 and vision.paddle_y - 60 < ball_pos[1] < vision.paddle_y + 60:
+            ball_speed[0] = abs(ball_speed[0])
+            consecutive_hits += 1
+            if consecutive_hits >= 2:
+                is_power_shot = True
+                ball_speed[0] = 14 # Power Shot Speed
+            else:
+                ball_speed[0] *= 1.05 # Slight normal speedup
+        
+        if ball_pos[0] >= WIDTH - 50 and ai_y - 60 < ball_pos[1] < ai_y + 60:
+            ball_speed[0] = -abs(ball_speed[0])
+            is_power_shot = False
+            consecutive_hits = 0
+
+        # Score Logic
+        if ball_pos[0] < 0 or ball_pos[0] > WIDTH:
+            if ball_pos[0] < 0: ai_score += 1
+            else: player_score += 1
+            ball_pos = [WIDTH//2, HEIGHT//2]
+            ball_speed = [5 * (1 if ball_speed[0] > 0 else -1), 5]
+            is_power_shot = False
+            ball_trail = []
+            if player_score >= 10 or ai_score >= 10: state = "GAMEOVER"
+
+    # Rendering
+    draw_paddle(30, int(vision.paddle_y), CYAN)
+    draw_paddle(WIDTH - 45, int(ai_y), MAGENTA)
+    draw_ball()
+    
+    # HUD
+    font = pygame.font.SysFont("Impact", 45)
+    screen.blit(font.render(str(player_score), True, CYAN), (WIDTH//4, 20))
+    screen.blit(font.render(str(ai_score), True, MAGENTA), (3*WIDTH//4, 20))
+
+    if state == "GAMEOVER":
+        res = "VICTORY!" if player_score >= 10 else "AI DOMINANCE"
+        screen.blit(font.render(res, True, YELLOW), (WIDTH//2 - 100, HEIGHT//2))
+
+    pygame.display.flip()
+    clock.tick(60) # Locked to 60 FPS for buttery smooth movement
