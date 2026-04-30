@@ -390,7 +390,7 @@ Suggested sequence:
 
 
 
-# 9. Bill of Materials
+# 9. Bill of Materials (Not applicable)
 
 ## 9.1 Full BOM
 
