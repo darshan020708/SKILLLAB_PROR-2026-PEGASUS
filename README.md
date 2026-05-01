@@ -153,18 +153,16 @@ What is the smallest version of this project that still delivers the core experi
 
 **Response:**  
 
-A working version where:
-- Camera successfully tracks an object
-- Paddle moves based on object position
-- Ball collision logic works correctly
-Even without advanced graphics, this delivers the core interaction.
+A usable system is one where:
+- Object tracking is accurate
+- Paddle movement is smooth
+- Game runs without lag
+- User can easily understand how to play
 
 ## 4.3 Stretch Features
-- Multi-object tracking for multiplayer
-- Gesture-based controls
-- Improved tracking accuracy
-- Scoreboard and difficulty levels
-- Sound effects and animations
+- Camera detects object
+- Paddle moves with object
+- Ball collision works
 
 ---
 
@@ -212,28 +210,28 @@ Include:
 
 **Response:**  
 Input:
-Camera captures real-time video feed.
+Camera captures real-time video.
 
 Processing:
-OpenCV processes each frame to detect the object and determine its position.
+OpenCV detects the object and calculates its position.
 
 Decision:
-The detected position is mapped to paddle movement.
+The object’s X-position is mapped to paddle movement.
 
 Output:
-The paddle moves on the screen in the Ping Pong game.
+The paddle moves on the screen using Pygame.
 
-System Structure:
-Camera → OpenCV Processing → Game Logic → Display (Pygame)
+Flow:
+Camera → OpenCV → Position Mapping → Game Logic → Display
 
 
 ## 5.3 Input / Output Map
 
 | System Part   | Type            | What It Does               |
 | Camera Module | Input           | Captures real-time video   |
-| OpenCV	      |Process	Detects | object position            |
-| Game Logic	  |Decision	Converts| position to paddle movement|
-| Pygame Display|	Output	        |Shows game and paddle       |
+| OpenCV	       |Process	Detects  | Detects object position    |
+| Game Logic	   |Decision	Converts| Position to paddle movement|
+| Pygame Display|	Output	         | Displays game              |
 
 
 ---
@@ -242,7 +240,7 @@ Camera → OpenCV Processing → Game Logic → Display (Pygame)
 
 ## 6.1 Concept Architecture/sketch/schematic
 
-Add an early sketch of the full idea.
+The system uses a camera to capture movement of a real-world object. OpenCV processes the video feed and detects the object's position. This position is mapped to the paddle movement in the game, creating a real-time interactive system.
 
 **Insert image below:**  
 `[Upload image and link here]`
@@ -284,26 +282,21 @@ Add a sketch with labels showing:
 
 ## 7.1 Electronics Used
 
-| Component                 | Quantity | Purpose                               |
-| ------------------------- | --------:| ------------------------------------- |
-| `[Raspi/FPGA]`                 | `1`      | `[Main controller]`                   |
-| `[L298N Motor Driver]`    | `1`      | `[Control Motors]`                    |
-| `[BO Motors]`             | `2`      | `[Rotate wheels]`                     |
-| `[Buck Converter]`        | `1`      | `[Power ESP32]`                       |
-| `[Li Ion Battery Pack]`   | `2`      | `[Power]`                             |
-| `[Projector]`             | `1`      | `[Display obstacles]`                 |
-| `Camera (Webcam / Phone)` | `1`      | `[Tracks car position using markers]` |
+| Component                | Quantity | Purpose                                      |
+|--------------------------|----------|----------------------------------------------|
+| Raspberry Pi 4B          | 1        | Handles system setup / video handling        |
+| Laptop                   | 1        | Runs OpenCV processing and Pygame            |
+| Smartphone (IP Camera)   | 1        | Provides live video feed                     |
+| Camera App (IP Webcam)   | 1        | Streams video over network                   |
 
 ## 7.2 Wiring Plan
 
 Describe the main electrical connections.
 
 **sample Response:**  
-`The RASPI is connected to the motor driver (L298N) using four GPIO pins (18,19; 22,23) to control motor direction (IN1, IN2, IN3, IN4). Two PWM-capable pins (ENA and ENB; 25 and 26) are connected to control the speed of each motor.
-
-The motors are connected to the output terminals of the motor driver. The motor driver is powered directly by the battery pack (higher voltage), while the ESP32 receives regulated 5V from the buck converter.
-
-All components share a common ground to ensure stable operation. The projector and camera are connected to the laptop, which handles tracking and game logic separately.`
+`No complex wiring is required.
+- The system uses a smartphone camera connected via an IP camera application. The video stream is transmitted over the same network and accessed on the laptop using VLC media player.
+- The Raspberry Pi is used as part of the system setup, but there are no motor drivers or physical wiring connections involved.`
 
 ## 7.3 Circuit Diagram/architecture diagram
 
@@ -316,12 +309,12 @@ Insert a hand-drawn or software-made circuit diagram.
 
 # 7.4. Power Plan
 
-| Question         | Response                                                                                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Power source     | `Battery (Li-ion pack)`                                                                                                                           |
-| Voltage required | `~6–8.4V for motors (via driver), stepped down to 5V for ESP32 (buck converter)`                                                                  |
-| Current concerns | `Motors can draw high current under load, which may cause voltage drops affecting ESP32 and WiFi stability`                                       |
-| Safety concerns  | `Avoid over-discharging Li-ion batteries, ensure proper voltage regulation, prevent short circuits, and secure wiring to avoid loose connections` |
+| Question         | Response                                                                 |
+|------------------|--------------------------------------------------------------------------|
+| Power source     | Laptop power supply + smartphone battery                                |
+| Voltage required | Standard operating voltage of devices                                   |
+| Current concerns | Not significant (low-power system)                                      |
+| Safety concerns  | Ensure stable power supply and avoid overheating of devices             |
 
 ---
 
@@ -333,8 +326,7 @@ Insert a hand-drawn or software-made circuit diagram.
 | ------------------------------ | ---------------------------------------------- |
 | `[MicroPython]`                | `Control ESP32`                                |
 | `[Python/PyGame/OpenCV]`       | `Track markers, game logic, create projection` |
-| `[Fusion/Blender/Illustrator]` | `[Prototyping structure]`                      |
-|                                |                                                |
+| `[Fusion/Blender/Illustrator]` | `[Prototyping structure]`                      |                 
 
 ## 8.2 Software Logic/Algorithm
 
@@ -351,22 +343,44 @@ Include:
 - reset behavior.
 
 **Response:**  
-`
+1. Start the system and initialize the camera feed (via IP camera and VLC).
+2. Open the game window using Pygame.
+3. Continuously capture frames from the video stream.
+4. Preprocess each frame (resize, convert to HSV color space).
+5. Detect the blue-colored object using color thresholding.
+6. Extract the object's centroid (X-coordinate).
+7. Map the X-coordinate to the paddle position on the screen.
+8. Update the paddle position accordingly.
+9. Move the ball automatically based on game logic.
+10. Check for collisions with paddle and walls.
+11. Update the display using Pygame.
+12. Repeat the loop until the game ends.
 
 - **Sample Startup behavior:**  
-  The Raspi/FPGA initializes motor pins, PWM control, and starts a WiFi access point with a web server. The laptop initializes camera input, tracking system, and projection mapping.
+  - Initialize video stream from phone (IP camera via VLC).
+  - Load game window and set initial paddle and ball positions.
 - **Input handling:**  
-  Movement commands are received from the laptop (pygame sends http requests)
+  - Input is taken from the camera feed.
+  - Movement of the blue object is used to control paddle position.
 - **Sensor reading:**  
-  The camera continuously captures frames, and OpenCV detects ArUco markers to determine the car’s position and orientation.
+  - Frames are continuously captured from the IP camera stream.
+  - OpenCV processes each frame to detect the blue-colored object.
 - **Decision logic:**  
-  The system maps the car’s position into a virtual coordinate system and checks for nearby obstacles or collisions. If movement is valid, the command is allowed; if not, it is blocked or replaced with a feedback action (like a slight shake).
+ - The object's X-coordinate is mapped to paddle movement.
+ - Boundary conditions are applied to keep paddle within screen limits.
+ - Collision logic determines ball direction changes.
 - **Output behavior:**  
-  The ESP32 drives the motors using PWM signals to control speed and direction. The projector displays the updated game environment, including obstacles, targets, and feedback visuals.
+ - Paddle position is updated in real time.
+ - Ball movement and collisions are displayed on screen.
+ - Game visuals are rendered using Pygame.
 - **Communication logic:**  
-  The laptop sends HTTP requests (e.g., `/forward`, `/left`) to the ESP32 over WiFi. The ESP32 parses these commands and executes motor actions.
+ - The system runs locally.
+ - Video is streamed from the phone to the laptop via IP camera and accessed using VLC.
+ - No additional device-to-device communication is used.
 - **Reset behavior:**  
-  If no command is received within a short timeout, the ESP32 stops the motors. The game resets when a level is completed or restarted.`
+ - The game resets when the player misses the ball.
+ - Paddle and ball return to initial positions.
+ - The system continues running until manually exited.
 
 ## 8.3 Code Flowchart
 
@@ -394,46 +408,50 @@ Suggested sequence:
 
 ## 9.1 Full BOM
 
-| Item                             | Quantity | In Kit? | Need to Buy? | Estimated Cost | Material / Spec               | Why This Choice?          |
-| -------------------------------- | --------:| ------- | ------------ | --------------:| ----------------------------- | ------------------------- |
-| `[RASPI]`                        | `1`      | `Yes`   | `No`         | `0`            | `38 Pin ESP32`                | `[To control components]` |
-| `[Motor Driver]`                 | `[1]`    | `[Yes]` | `[No]`       | `0`            | `[LN296]`                     | `[To drive both motors]`  |
-| `[DC Motors and wheel]`          | `[2]`    | `[No]`  | `[Yes]`      | `[150]`        | `[BO Motors and 6 cm wheels]` | `[high torque motors]`    |
-| `[Buck Converter]`               | `[1]`    | `[No]`  | `[Yes]`      | `[75]`         |                               |                           |
-| `[Li-ion batteries with holder]` | `[1]`    | `[No]`  | `[Yes]`      | `[200]`        |                               |                           |
+| Item                           | Quantity | In Kit? | Need to Buy? | Estimated Cost | Material / Spec              | Why This Choice?                    |
+|------------------------------- |---------:|-------- |--------------|----------------|------------------------------|-------------------------------------|
+| Raspberry Pi 4B                | 1        | Yes     | No           | 0              | 4GB RAM                      | For handling camera/system setup    |
+| Laptop                         | 1        | Yes     | No           | 0              | Standard                     | Runs OpenCV + Pygame                |
+| Smartphone (IP Camera)         | 1        | Yes     | No           | 0              | Android/iOS                  | Provides live video feed            |
+| Camera App (IP Webcam)         | 1        | Yes     | No           | 0              | Mobile App                   | Streams video over network          |
+| VLC Media Player               | 1        | Yes     | No           | 0              | Software                     | Receives video stream               |
+| Blue Object (pouch/any object) | 1        | Yes     | No           | 0              | Colored object               | Used for tracking                   |
 
 ## 9.2 Material Justification
 
 Explain why you selected your main materials and components.
 
 **Response:**  
-`DC motors (BO motors) were chosen instead of servos or steppers because the system requires continuous rotation for movement rather than precise angular control (Previously, we were considering using steppers as we were planning on tracking movement on the ESP using its relative position from an origin, but since we're using a camera now, this is not required). A motor driver (L298N) was used to allow bidirectional control and speed variation using PWM.`
+- `The Raspberry Pi and laptop were used to handle video processing and game execution. A smartphone was used as an IP camera to provide a flexible and wireless video input.
+- OpenCV was chosen for object detection due to its efficiency in real-time image processing, while Pygame was used for game development because of its simplicity and ease of integration.
+- A blue-colored object was selected for tracking because it provides clear color segmentation and improves detection accuracy.`
 
 
 ## 9.3 Items You chose
 
-| Item                 | Why Needed               | Purchase Link | Latest Safe Date to Procure | Status       |
-| -------------------- | ------------------------ | ------------- | --------------------------- | ------------ |
-| `BO Motors + Wheels` | `Drive system for car`   | `robu.in`     | `15th April`                | `[Received]` |
-| `Buck Converter`     | `Stable power for ESP32` | `local store` | `before testing`            | `[Received]` |
-| `Li-ion Batteries`   | `Portable power`         | `local store` | `before testing`            | `Recieved`   |
+| Item                       | Why Needed                     | Purchase Link | Latest Safe Date | Status     |
+|----------------------------|--------------------------------|---------------|------------------|------------|
+| Smartphone (IP Camera)     | Capture video feed             | —             | Already available| Used       |
+| Raspberry Pi 4B            | System setup                   | —             | Already available| Used       |
+| Laptop                     | Run game and processing        | —             | Already available| Used       |
 
 ## 9.4 Budget Summary
 
-| Budget Item           | Estimated Cost              |
-| --------------------- | ---------------------------:|
-| Electronics           | `[400]`                     |
-| Mechanical parts      | `[200]`                     |
-| Fabrication materials | `[0 (Available on campus)]` |
-| Purchased extras      | `[0]`                       |
-| Contingency           | `[300]`                     |
-| **Total**             | `[900]`                     |
+| Budget Item           | Estimated Cost |
+|-----------------------|---------------:|
+| Electronics           | 0              |
+| Software              | 0              |
+| Additional Materials  | 0              |
+| Contingency           | 0              |
+| **Total**             | 0              |
 
 ## 9.5 Budget Reflection
 
 If your cost is too high, what can be simplified, removed, substituted, or shared?
 
 **Response:**  
+
+Since all components used were already available, the project did not incur additional cost. The system was designed to be low-cost and easily replicable using commonly available devices.
 
 ---
 
@@ -452,25 +470,35 @@ Include:
 - how documentation will be maintained.
 
 **Response:**  
-
+- The team worked by dividing tasks based on individual strengths. Coding and system integration were handled by members comfortable with programming, while others focused on testing, setup, and documentation.
+- Decisions were made collaboratively after quick discussions, ensuring that everyone agreed on the approach before implementation.
+- Progress was checked regularly by testing the system after each major change, especially for object tracking and gameplay functionality.
+- If a task was delayed, other team members supported to complete it faster and avoid bottlenecks.
+- Documentation was maintained alongside development, with updates added after completing each major section of the project.
 
 ## 10.2 Task Breakdown
 
-| Task ID | Task                    | Owner    | Estimated Hours | Deadline     | Dependency | Status |
-| ------- | ----------------------- | -------- | ---------------:| ------------ | ---------- | ------ |
-| T1      | `[Finalize concept]`    | `[Both]` | `2`             | `1st April`  | `None`     | `Done` |
+| Task ID | Task                          | Owner                | Estimated Hours | Deadline    | Dependency | Status |
+|-------- |-------------------------------|----------------------|----------------|--------------|------------|--------|
+| T1      | Finalize concept              | All                  | 1              | 30th April   | None       | Done   |
+| T2      | Setup IP camera (phone + VLC) | Jyotiraditya         | 1              | 30th April   | T1         | Done   |
+| T3      | Implement object tracking     | Jyotiraditya         | 2              | 30th April   | T2         | Done   |
+| T4      | Develop game (Pygame)         | Darshan              | 1              | 30th April   | T1         | Done   |
+| T5      | Integrate tracking + game     | Bhakti               | 2              | 30th April   | T3, T4     | Done   |
+| T6      | Testing & debugging           | All                  | 2              | 30th April   | T5         | Done   |
+| T7      | Documentation                 | Sneha                | 2              | 30th April   | All        | Done   |
 
 
 ## 10.3 Responsibility Split
 
-| Area                 | Main Owner     | Support Owner |
-| -------------------- | ----------     | ------------- |
-| Concept              | `[Mrugendra]`  | `[Jyoti]`     |
-| Electronics          | `[]`           | `[]`          |
-| Coding               | `[]`           | `[]`          |
-| Mechanical build     | `[]`           | `[]`          |
-| Testing              | `[]`           | `[]`          |
-| Documentation        | `[]`           | `[]`          |
+| Area                 | Main Owner             | Support Owner        |
+|----------------------|------------------------|----------------------|
+| Concept              | Mrugendra              | All                  |
+| Electronics/Setup    | Jyotiraditya           | Darshan              |
+| Coding (OpenCV)      | Jyotiraditya           | Bhakti               |
+| Coding (Pygame)      | Darshan                | Jyotiraditya         |
+| Testing              | All                    | —                    |
+| Documentation        | Sneha                  | Bhakti               |
 
 ---
 
@@ -553,22 +581,32 @@ What is the single biggest uncertainty in your project at this stage?
 
 ## 14.1 Technical Testing Plan
 
-| What Needs Testing     | How You Will Test It                                                                 | Success Condition                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `[Wifi connection]`    | `[Check if motor spins via app button]`                                              | `[Both motors accurately respond to wifi signals]`                                                   |
-                       |
+| What Needs Testing       | How You Will Test It                                     | Success Condition                          |
+|--------------------------|----------------------------------------------------------|--------------------------------------------|
+| IP Camera Video Feed     | Connect phone camera via IP and open in VLC              | Continuous smooth video stream             |
+| Object Tracking          | Move blue object in front of camera                      | Object detected consistently               |
+| Paddle Mapping           | Compare object movement with paddle                      | Paddle follows object smoothly             |
+| Game Responsiveness      | Play continuously                                        | No noticeable lag                          |
+| Collision Detection      | Hit ball with paddle                                     | Ball responds correctly                    |
+| Raspberry Pi Processing  | Run tracking via Pi + laptop integration                 | Stable performance without crashes         |
+| Lighting Conditions      | Test in bright and dim environments                      | Detection remains usable                   |
+
 ## 14.2 Testing and Debugging Log
 
-| Date          | Problem Found                         | Type         | What You Tried                                | Result               | Next Action                                    |
-| ------------- | ------------------------------------- | ------------ | --------------------------------------------- | -------------------- | ---------------------------------------------- |
-| `18th April`  | `Car not balancing properly`          | `Mechanical` | `Add low-friction caster support to one side` | `Worked`             | `improve caster structure`                     |
+| Date       | Problem Found                              | Type       | What You Tried                                | Result               | Next Action                |
+|------------|-------------------------------------------- |-----------|-----------------------------------------------|----------------------|----------------------------|
+| 30th April | IP camera lag / delay                       | Technical | Adjusted network and reduced resolution       | Improved             | Optimize further            |
+| 30th April | Blue object not detected properly           | Technical | Tuned HSV color range in OpenCV               | Fixed                | Fine-tune for lighting      |
+| 30th April | Paddle movement jitter                      | Technical | Applied smoothing/filtering                   | Reduced jitter       | Improve stability           |
+| 30th April | Tracking failed in low light                | Technical | Changed lighting / background                 | Partially solved     | Improve robustness          |
 
 
 ## 14.3 Playtesting Notes
-
-| Tester      | What They Did                        | What Confused Them                    | What They Enjoyed                         | What You Will Change                          |
-| ----------- | ------------------------------------ | ------------------------------------- | ----------------------------------------- | --------------------------------------------- |
-| `Gopal` | `Tried navigating through obstacles` | `Some obstacles ewren't clear enough` | `Liked projection + real car interaction` | `Add a slight red highlight around obstacles` |
+ 
+| Tester                      | What They Did                    | What Confused Them          | What They Enjoyed              | What You Will Change                 |
+|-----------------------------|----------------------------------|-----------------------------|--------------------------------|--------------------------------------|
+| Team Member (Jyotiraditya)  | Played using object control      | Initial object positioning  | Real-time interaction          | Add simple instructions              |
+| Friend                      | Played full game                 | Slight delay in movement    | Unique control method          | Improve smoothness                   |
 
 
 ---
@@ -590,21 +628,12 @@ Include:
 - revisions.
 
 **Response:**  
-`The fabrication process involved designing, manufacturing, assembling, and refining both the physical structure and electronic integration of the system.`
-
-`Design (CAD Modeling):
-The initial model was created using CAD software, where components were designed based on the actual dimensions of the electronic parts. This ensured accurate fitting and minimized errors during assembly.
-Cutting (Laser Cutting):
-The designed parts were fabricated using laser cutting techniques. Sheets were cut precisely according to the CAD model to create the structural base and mounts for components.`
-
-`Components were fixed using adhesives and mechanical supports. Certain parts were intentionally kept modular (not permanently fixed) to allow easy replacement and modification of electronics.
-Surface Finishing:
-Some parts were sanded to smooth rough edges after cutting. Sawdust mixed with adhesive was used to fill gaps and uneven edges, improving structural finish. The final structure was then painted for better aesthetics and durability.`
-
-`Environment Setup (Dark Room Fabrication):
-To enhance projection visibility, a controlled dark environment was created using Z-boards, paper sheets, and bedsheets. This minimized external light interference and improved projection clarity.
-Revisions and Iterations:
-Multiple adjustments were made throughout the process, including refining alignment, improving structural stability, repositioning components, and optimizing the interaction between the physical car and projected environment.`
+`Not applicable.
+This project is primarily software-based and does not involve physical fabrication such as cutting, 3D printing, or assembly.
+The system was developed using a combination of a Raspberry Pi 4B and a laptop. The Raspberry Pi was used for handling the camera input, while the laptop was used to run the game and processing.
+A phone camera was connected using an IP camera application, and the video feed was accessed on the laptop using VLC media player. OpenCV was used to process the video stream and detect the blue-colored object, while Pygame handled the game logic and rendering.
+Minor setup involved properly positioning the phone camera to ensure clear object detection. Multiple adjustments were made to improve tracking accuracy and gameplay responsiveness.
+Revisions mainly focused on stabilizing object detection, reducing jitter, and refining the mapping between object movement and paddle control.`
 
 ## 16 Build Photos
 
@@ -631,14 +660,24 @@ Suggested images:
 Describe the final version of your project.
 
 **Response:**  
-
+- The final system is a camera-controlled Ping Pong game where a real-world object is used to control the paddle.
+- The camera captures the movement of the blue color object, and OpenCV processes the video feed to detect its position in real time. This position is mapped to the paddle (white block) on the screen.
+- The game is developed using Pygame and includes ball movement, collision detection, and basic scoring. The user interacts with the game by physically moving the object, creating a real-time connection between physical motion and digital gameplay.
 
 ## 17.2 What Works Well
 
-
+- Reliable tracking of blue-colored object  
+- Smooth mapping of object movement to paddle  
+- Real-time responsiveness  
+- Accurate collision detection  
+- Simple and intuitive gameplay  
 
 ## 17.3 What Still Needs Improvement
 
+- Currently limited to blue-colored objects only  
+- Performance depends on lighting conditions  
+- Minor jitter in paddle movement  
+- UI and visual improvements can be added  
 
 ## 17.4 What Changed From the Original Plan
 
@@ -646,6 +685,11 @@ How did the project change from the initial idea?
 
 **Response:**  
 
+- Initially, the project idea involved hardware-based interaction and to control the paddle by hand gesture using the web camera.
+- During development, we faced challenges with stable object tracking, which led us to temporarily shift to using a phone as a joystick to control the paddle. This approach helped us continue development while troubleshooting the tracking issues.
+- After resolving the detection problems, we reverted back to our original idea of using object-based control through computer vision.
+- The system uses a phone camera connected via IP streaming (VLC) along with Raspberry Pi and laptop for processing and gameplay.
+-This iterative change improved our understanding of the system and helped us build a more stable and effective final solution.
 
 ---
 
@@ -658,7 +702,10 @@ What slowed you down?
 How well did you manage time, tasks, and responsibilities?
 
 **Response:**  
-
+- The team worked collaboratively by dividing tasks into coding, testing, and documentation.
+-During development, we faced a major challenge where we had to change our main idea. Initially, we planned to hand gesture as the paddle using the camera. Then we planned to work on object detecting as a paddle . Due to technical difficulties, we temporarily shifted to using a phone as a joystick to control the paddle. After resolving the tracking issues, we successfully reverted back to our original idea of object-based control.
+This process slowed us down slightly, but it also helped us better understand the system and improve our implementation. Overall, we managed our time well by focusing on completing the core functionality first and supporting each other when required.
+- We managed time effectively and adapted to changes in the project plan. Simplifying the idea helped us focus on building a working system within the given time.
 
 ## 18.2 Technical Reflection
 
@@ -672,6 +719,11 @@ What did you learn about:
 
 **Response:**  
 
+- We learned how to stream video from a phone using IP camera and VLC, process it using OpenCV, and integrate it with game logic using Pygame.
+- Worked with Raspberry Pi and understood how to handle real-time video input and system integration.
+- To use OpenCV for object detection and tracking, and how to process real-time video input.
+- Game development using Pygame, including handling movement, collision detection, and rendering.
+- Additionally, we understood how to map real-world input to digital control systems.
 
 ## 18.3 Design Reflection
 
@@ -685,7 +737,9 @@ What did you learn about:
 - iteration?
 
 **Response:**  
-
+- We learned the importance of simple and intuitive interaction design.
+- Using physical movement instead of traditional controls made the system more engaging.
+- We also understood how iteration improves usability and overall user experience.
 
 ## 18.4 If You Had One More hour
 
@@ -693,7 +747,7 @@ What would you improve next?
 
 **Response:**  
 
-` `
+`We would improve tracking accuracy, reduce jitter, and add better visuals and sound effects to enhance the gameplay experience. `
 
 ---
 
