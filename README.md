@@ -63,8 +63,8 @@ By the final review, this README should clearly show:
 
 | Name                  | Primary Role                     | Secondary Role     | Strengths Brought to the Project                     |
 |-----------------------|----------------------------------|--------------------|------------------------------------------------------|
-| Bhakti Milind Kasare  | Electronics / Coding /           | Documentation      | Documentation, Communication, Repo Management        |
-| Darshan Dubey         | Electronics / Fabrication        | Coding             | Hardware Handling, UI Design                         |
+| Bhakti Milind Kasare  | Electronics / Coding             | Documentation      | Documentation, Communication, Repo Management        |
+| Darshan Dubey         | Hardware Setup / UI Design       | Assigning Roles    | Hardware Handling, UI Design                         |
 | Jyotiraditya Bhosale  | Systems Integration / OpenCV     | Hardware Setup     | Camera Integration, Network Streaming, Debugging     |
 | Sneha Tiwari          | Creative Lead / Documentation    | Ideation           | Version Control, GitHub Management, Concept Design   |
 
@@ -247,7 +247,8 @@ Camera → OpenCV → Position Mapping → Game Logic → Display
 The system uses a camera to capture movement of a real-world object. OpenCV processes the video feed and detects the object's position. This position is mapped to the paddle movement in the game, creating a real-time interactive system.
 
 **Insert image below:**  
-Not applicable
+<img width="2560" height="1102" alt="image" src="https://github.com/user-attachments/assets/5238175c-80cc-4382-a591-76d1ea13cd39" />
+
 
 ## 6.2 Labeled Build Sketch/architecture/flow diagram/algorithm
 
@@ -260,8 +261,8 @@ Add a sketch with labels showing:
 - output elements.
 
 **Insert image below:**  
-`[Upload image and link here]`
-<img width="1600" height="1200" alt="image" src="https://github.com/user-attachments/assets/95637f31-b4e7-4427-a9e1-4b63fbeb0ac5" />
+
+<img width="1600" height="1371" alt="image" src="https://github.com/user-attachments/assets/e821749a-87d6-4e65-86d7-4dfb19671aef" />
 
 ## 6.3 Approximate Dimensions
 
@@ -321,10 +322,10 @@ Phone Camera (IP Camera) → VLC Media Player → OpenCV Processing → Pygame (
 
 | Tool / Platform                | Purpose                                        |
 | ------------------------------ | ---------------------------------------------- |
-| `[MicroPython]`                | `Control ESP32`                                |
+| `Raspbery Pi OS`               | `Software and game integration`                |
 | `[Python/PyGame/OpenCV]`       | `Track markers, game logic, create projection` |
-| `[Fusion/Blender/Illustrator]` | `[Prototyping structure]`                      |                 
-
+| `Thonny`                       | `Prototyping structure`                        |                 
+ 
 ## 8.2 Software Logic/Algorithm
 
 Describe what the code must do.
@@ -395,8 +396,8 @@ Suggested sequence:
 - error handling.
 
 **Insert image below:**  
-<img width="1600" height="1200" alt="image" src="" />
-<img width="1600" height="1200" alt="image" src="" />
+<img width="1149" height="1369" alt="image" src="https://github.com/user-attachments/assets/e9e2b1b4-7c98-462e-a7b6-aef62ad2f14e" />
+
 
 
 
@@ -493,7 +494,7 @@ Include:
 | Concept              | Mrugendra              | All                  |
 | Electronics/Setup    | Jyotiraditya           | Darshan              |
 | Coding (OpenCV)      | Jyotiraditya           | Bhakti               |
-| Coding (Pygame)      | Darshan                | Jyotiraditya         |
+| Coding/UI (Pygame)   | Darshan                | Jyotiraditya         |
 | Testing              | All                    | —                    |
 | Documentation        | Sneha                  | Bhakti               |
 
@@ -562,7 +563,7 @@ Expected outcomes:
 
 | Risk                                                            | Type         | Likelihood | Impact   | Mitigation Plan                                                                       | Owner                |
 | --------------------------------------------------------------- | ------------ | ---------- | -------- | ------------------------------------------------------------------------------------- | -------------------- |
-| WiFi connection between laptop and ESP32 becomes unstable       | `Technical`  | `Medium`   | `High`   | Keep ESP32 close, ensure stable power supply, reduce network load, add fail-safe stop | `[Gopal]`           |
+| WiFi connection between laptop and Phone IP camera becomes unstable       | `Technical`  | `Medium`   | `High`   | Keep phone IP camera close, ensure stable power supply, reduce network load, add fail-safe stop | `[Mrugrendra]`           |
 
 
 ## 13.2 Biggest Unknown Right Now
@@ -570,6 +571,14 @@ Expected outcomes:
 What is the single biggest uncertainty in your project at this stage?
 
 **Response:**  
+
+Latency Jitter 
+Since data is sent via HTTP over Wi-Fi from a smartphone to the Raspberry Pi 4B, the biggest unknown is the consistency of arrival times.
+
+Wi-Fi is prone to interference and congestion.
+
+Even if processing is fast, a "hiccup" in the network can cause a frame drop, breaking the 60 FPS experience.
+
 
 
 ---
@@ -644,7 +653,7 @@ Suggested images:
 - mechanism test,
 - app screenshot,
 - final build.
-- <img width="960" height="1280" alt="WhatsApp Image 2026-04-24 at 9 46 02 AM (1)" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
+-<img width="1280" height="960" alt="image" src="https://github.com/user-attachments/assets/26a247d4-b15a-4dce-bff8-3851608fa0e0" />
 
 
 
@@ -752,24 +761,21 @@ What would you improve next?
 
 Before submission, confirm that:
 
-- [x] Team details are complete
+- [✅] Team details are complete
 - [✅] Project description is complete
-- [x] Inspiration sources are included
-- [x] Sketches are added
+- [✅] Inspiration sources are included
+- [✅] Sketches are added
 - [✅] BOM is complete
 - [✅] Purchase list is complete
 - [✅] Budget summary is complete
-- [x] Mechanical planning is documented if applicable
-- [x] App planning is documented if applicable
-- [x] Code flowchart is added
+- [✅] Code flowchart is added
 - [✅] Task breakdown is complete
-- [x] Weekly logs are updated
-- [x] Risk register is complete
-- [x] Testing log is updated
-- [x] Playtesting notes are included
-- [x] Build photos are included
+- [✅] Risk register is complete
+- [✅] Testing log is updated
+- [✅] Playtesting notes are included
+- [✅] Build photos are included
 - [✅] Final reflection is written
-<img width="1131" height="1600" alt="image" src="" />
+
 
 ---
 
