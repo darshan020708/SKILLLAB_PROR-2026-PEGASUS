@@ -55,18 +55,18 @@ By the final review, this README should clearly show:
 
 # 1. Team Identity
 
-## 1.1 Group Name - Peagasus
+## 1.1 Group Name - Pegasus
 
 
 
 ## 1.2 Team Members
 
-| Name                  | Primary Role                    | Secondary Role   | Strengths Brought to the Project |
-| --------------------- | ------------------------------- | --------------   | -------------------------------- |
-| Bhakti Milind Kasare  | `[Electronics / Coding / App ]` | `Documentation`  | `Documentation, Gift of Gab `    |
-| Darshan Dubey         | `[Electronics / Fabrication]`   | `[Coding]`       | `Material Handling, Hardware`    |
-| Jyotiraditya Bhosale  |                                 |                  |                                  |
-| Sneha Tiwari          |                                 |                  |                                  |
+| Name                  | Primary Role                     | Secondary Role     | Strengths Brought to the Project                     |
+|-----------------------|----------------------------------|--------------------|------------------------------------------------------|
+| Bhakti Milind Kasare  | Electronics / Coding /           | Documentation      | Documentation, Communication, Repo Management        |
+| Darshan Dubey         | Electronics / Fabrication        | Coding             | Hardware Handling, UI Design                         |
+| Jyotiraditya Bhosale  | Systems Integration / OpenCV     | Hardware Setup     | Camera Integration, Network Streaming, Debugging     |
+| Sneha Tiwari          | Creative Lead / Documentation    | Ideation           | Version Control, GitHub Management, Concept Design   |
 
 ## 1.3 Project Title
 
@@ -89,10 +89,8 @@ In 1–2 paragraphs, explain:
 - what technologies are involved.
 
 **Response:**  
-Our project is an interactive Ping Pong game that replaces traditional controls with computer vision. Instead of using a keyboard or mouse, the player controls the paddle by moving a physical object (such as a phone or colored marker) in front of a camera.
-
+- Our project is an interactive Ping Pong game that replaces traditional controls with computer vision. Instead of using a keyboard or mouse, the player controls the paddle by moving a physical blue object (such as a phone or colored marker) in front of a camera.
 The system uses a camera module to continuously capture frames and detect the position of the object in real time. This position is then mapped to the movement of the paddle (white block) on the screen.
-
 The game is developed using Python with OpenCV for object tracking and Pygame for rendering the game environment. This creates a more natural and engaging interaction, blending physical motion with digital gameplay.
 
 ---
@@ -138,16 +136,11 @@ This movement is instantly reflected on the screen, where the white paddle follo
 The ball begins moving, and the user must physically move the object to hit the ball and keep it in play.
 The experience feels intuitive, as the player directly controls the game using real-world movement instead of buttons.
                                         
-
 ---
 
 # 4. Definition of Success
 
 ## 4.1 Definition of “Usable”
-
-
-
-## 4.2 Minimum Usable Version
 
 What is the smallest version of this project that still delivers the core experience?
 
@@ -159,11 +152,22 @@ A usable system is one where:
 - Game runs without lag
 - User can easily understand how to play
 
-## 4.3 Stretch Features
+## 4.2 Minimum Usable Version
+
 - Camera detects object
 - Paddle moves with object
 - Ball collision works
 
+  ## 4.3 Stretch Features
+
+What features are nice to have but not essential?
+
+- Support for tracking multiple colors or objects instead of only blue  
+- Improved tracking accuracy and stability in different lighting conditions  
+- Multiplayer mode (two paddles controlled by different objects)  
+- Score display and game levels (difficulty increase over time)  
+- Sound effects for collisions and scoring  
+- Better UI design with animations and visual effects  
 ---
 
 # 5. System Overview
@@ -243,15 +247,7 @@ Camera → OpenCV → Position Mapping → Game Logic → Display
 The system uses a camera to capture movement of a real-world object. OpenCV processes the video feed and detects the object's position. This position is mapped to the paddle movement in the game, creating a real-time interactive system.
 
 **Insert image below:**  
-`[Upload image and link here]`
-
-Example:
-
-```md
-
-```
-
-
+Not applicable
 
 ## 6.2 Labeled Build Sketch/architecture/flow diagram/algorithm
 
@@ -303,9 +299,10 @@ Describe the main electrical connections.
 Insert a hand-drawn or software-made circuit diagram.
 
 **Insert image below:**  
-`[Upload image and link here]`
-<img width="867" height="1156" alt="" src="" />
-
+Not applicable.
+This project does not involve a traditional electronic circuit.  
+The system follows a software-based architecture:
+Phone Camera (IP Camera) → VLC Media Player → OpenCV Processing → Pygame (Game Output)
 
 # 7.4. Power Plan
 
@@ -756,22 +753,22 @@ What would you improve next?
 Before submission, confirm that:
 
 - [x] Team details are complete
-- [x] Project description is complete
+- [✅] Project description is complete
 - [x] Inspiration sources are included
 - [x] Sketches are added
-- [x] BOM is complete
-- [x] Purchase list is complete
-- [x] Budget summary is complete
+- [✅] BOM is complete
+- [✅] Purchase list is complete
+- [✅] Budget summary is complete
 - [x] Mechanical planning is documented if applicable
-- [ ] App planning is documented if applicable
+- [x] App planning is documented if applicable
 - [x] Code flowchart is added
-- [x] Task breakdown is complete
+- [✅] Task breakdown is complete
 - [x] Weekly logs are updated
 - [x] Risk register is complete
 - [x] Testing log is updated
 - [x] Playtesting notes are included
 - [x] Build photos are included
-- [x] Final reflection is written
+- [✅] Final reflection is written
 <img width="1131" height="1600" alt="image" src="" />
 
 ---
