@@ -232,6 +232,7 @@ Camera → OpenCV → Position Mapping → Game Logic → Display
 ## 5.3 Input / Output Map
 
 | System Part   | Type            | What It Does               |
+|---------------|-----------------|----------------------------|
 | Camera Module | Input           | Captures real-time video   |
 | OpenCV	       |Process	Detects  | Detects object position    |
 | Game Logic	   |Decision	Converts| Position to paddle movement|
@@ -491,7 +492,7 @@ Include:
 
 | Area                 | Main Owner             | Support Owner        |
 |----------------------|------------------------|----------------------|
-| Concept              | Mrugendra              | All                  |
+| Planning              | All              | -                  |
 | Electronics/Setup    | Jyotiraditya           | Darshan              |
 | Coding (OpenCV)      | Jyotiraditya           | Bhakti               |
 | Coding/UI (Pygame)   | Darshan                | Jyotiraditya         |
@@ -550,11 +551,11 @@ Expected outcomes:
 
 | Days   | Planned Goal   | What Actually Happened | What Changed   | Next Steps     |
 | ------ | -------------- | ---------------------- | -------------- | -------------- |
-| Day 1 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-| Day 2 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-| Day 3 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-| Day 4 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-
+| 10:00-11:00 | `Designing the basic layout of the game` | `We implemented a basic ping-pong game`| `The game we implemented was too simple and basic` | `Adding better features` |
+| 11:00-12:00 | `Trying to integrate web camera` | `We werent able to get the camera to start`         | `Introduced to the technique of gyroscope` | `Trying out an online gyroscope` |
+| 12:00-1:00 | `Integrating the new IP camera` | `We were able to get the IP camera started`         | `The camera was not able to track the hand movements` | `Trying to replace hand with some other object` |
+| 1:00-2:00 | `Making the IP camera detect a blue object` | `The camera detected the blue object which could be used as a paddle`         | `The project was near completion as we got the camera to detect an object` | `Adding newer and better features` |
+| 2:00-3:00 | `Adding features and making the UI better` | `We applied and tried various different themes` | `Changed the previous themes and made the graphics smoother and better` |`Playing the final version of the ping-pong game`|
 ---
 
 # 13. Risks and Unknowns
