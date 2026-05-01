@@ -101,7 +101,8 @@ The game is developed using Python with OpenCV for object tracking and Pygame fo
 
 List what inspired the project.
 
-| Source Type | Title / Link                                                      | What Inspired You |
+|Source Type | Title / Link                                                      | What Inspired You |
+|------------|-------------------------------------------------------------------|-------------------|
 |video        | https://www.instagram.com/reel/DW4CT7WCDry/?igsh=cXg3dzAxYmdncDBo |                   |
 |project      | Computer Vision Games (OpenCV examples)                           |                   |
 |game         | Classic Ping Pong Game                                            |                   |
