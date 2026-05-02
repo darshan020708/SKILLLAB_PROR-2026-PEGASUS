@@ -74,7 +74,6 @@ Project Title: Ping Pong Game
 
  Camera Controlled Ping Pong Game
 
-<img width="1600" height="1131" alt="image" src="https://github.com/user-attachments/assets/c64bfbd4-b3b7-43d9-83ad-c203a5aa11bc" />
 
 ## 1.4 One-Line Pitch
 
@@ -103,7 +102,7 @@ List what inspired the project.
 
 |Source Type | Title / Link                                                      | What Inspired You |
 |------------|-------------------------------------------------------------------|-------------------|
-|video        | https://www.instagram.com/reel/DW4CT7WCDry/?igsh=cXg3dzAxYmdncDBo |                   |
+|video        | https://youtu.be/TSmTMt2DM5g?si=kl-uPMgHCgOp1jry |  The excitement to play our favourite and first childhood game with better approach                 |
 |project      | Computer Vision Games (OpenCV examples)                           |                   |
 |game         | Classic Ping Pong Game                                            |                   |
 
@@ -268,13 +267,7 @@ Add a sketch with labels showing:
 
 ## 6.3 Approximate Dimensions
 
-| Dimension        | Value   |
-| ---------------- | ------- |
-| Length           | `16 cm` |
-| Width            | `16 cm` |
-| Height           | `8 cm`  |
-| Estimated weight | `400 g` |
-
+Not Applicable
 ---
 
 # 7. Electronics Planning
